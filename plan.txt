@@ -1,0 +1,5 @@
+Coolfriends Pingpong
+* Take turns to commit any non zero amount of work to project and then upload and notify the other participant.
+* Make a browser game
+* The game cannot be about pingpong
+
