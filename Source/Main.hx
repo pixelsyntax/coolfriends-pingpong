@@ -1,17 +1,18 @@
 package;
 
-import haxe.macro.Type.AbstractType;
 import openfl.events.MouseEvent;
 import openfl.events.Event;
 import openfl.utils.Assets;
 import openfl.display.Bitmap;
 import openfl.display.Sprite;
 import haxe.Timer;
+
 class Main extends Sprite
 {
 	var bitmap : Bitmap;
 	var ringSprites:Array<{ spr:Sprite, isDrag:Bool }>;
 	var dir = 1;
+	var lastTime:Float = 0.0;
 
 	//
 
@@ -39,6 +40,7 @@ class Main extends Sprite
 			addChild(ringSprite);
 		}
 		
+		lastTime = Timer.stamp();
 		addEventListener(Event.ENTER_FRAME, test);
 	}
 
@@ -52,6 +54,9 @@ class Main extends Sprite
 
 	function test(event:Event) {
 		var t = Timer.stamp();
+		var dt = t - lastTime;
+		lastTime = t;
+
 		var i = 0;
 		var tau = Math.PI * 2;
 		var tauByLength = tau / ringSprites.length;
@@ -68,7 +73,7 @@ class Main extends Sprite
 			++i;
 		}
 		
-		bitmap.x += dir * 5;
+		bitmap.x += dir * 400.0 * dt; // trying to make stutter less noticable by using delta time
 		if ( bitmap.x + bitmap.width > stage.stageWidth )
 			dir = -1;
 		if ( bitmap.x < 0 )
