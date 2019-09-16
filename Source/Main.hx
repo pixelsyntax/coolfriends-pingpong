@@ -26,9 +26,10 @@ class Main extends Sprite
 
 		ringSprites = new Array<{ spr:Sprite, isDrag:Bool }>();
 		var ringBitmapData = Assets.getBitmapData("assets/ring.png");
-		for ( i in 0...25 ){
+		for ( i in 0...26 ){
 			var ringBitmap = new Bitmap(ringBitmapData);
 			var ringSprite = new Sprite();
+			ringSprite.blendMode = i % 2 == 0 ? openfl.display.BlendMode.SUBTRACT : openfl.display.BlendMode.MULTIPLY;
 			var info = { spr:ringSprite, isDrag:false };
 			ringSprite.addChild(ringBitmap);
 			ringSprite.buttonMode = true;
