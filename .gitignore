@@ -1,2 +1,19 @@
-Export/
-*.hxproj
+# Add any directories, files, or patterns you don't want to be tracked by version control
+/publish/*.pak
+/publish/7drl19.js
+/publish/game.js
+
+.DS_Store*
+._*
+.Spotlight-V100
+.Trashes
+
+#Icon?
+ehthumbs.db
+[Tt]humbs.db
+
+#stuff
+builds/
+.svn/
+export_obj/
+desktop.ini
