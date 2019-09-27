@@ -1,5 +1,6 @@
 package;
 
+import h3d.mat.Texture;
 import h2d.Tile;
 import hxd.Res;
 import haxe.ds.StringMap;
@@ -13,6 +14,7 @@ class Layout {
 	//
 
 	static var tiles = new StringMap<Tile>();
+	static var textures = new StringMap<Texture>();
 	static var fonts = new StringMap<Font>();
 
 	//
@@ -26,11 +28,25 @@ class Layout {
 			trace("ERROR: " + file + " not found");
 			return null;
 		}
-		var tile = res.toImage().toTile();
+		var tile = res.toTile();
 		tile.dx = Std.int(tile.width * -pivotX);
 		tile.dy = Std.int(tile.height * -pivotY);
         tiles.set(file, tile);
 		return tile;
+	}
+	
+    public static function getTexture(file:String):Texture {
+		if (textures.exists(file)) {
+			return textures.get(file);
+		}
+		var res = Res.loader.load("gfx/" + file + ".png");
+		if (res == null) {
+			trace("ERROR: " + file + " not found");
+			return null;
+		}
+		var texture = res.toTexture();
+        textures.set(file, texture);
+		return texture;
 	}
 	
 	public static function getFont(type:String = "DEFAULT"):Font {
