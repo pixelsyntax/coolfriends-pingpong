@@ -1,7 +1,7 @@
 package;
 
+import h3d.col.Bounds;
 import h3d.mat.Data.Filter;
-import h3d.mat.Data.MipMap;
 import h3d.scene.fwd.DirLight;
 import h3d.scene.fwd.PointLight;
 import h3d.prim.UV;
@@ -92,7 +92,8 @@ class Main extends hxd.App {
 
 	override function update(dt:Float) {
 		var time = Timer.frameCount * 0.02;
-		s3d.camera.pos.set(Math.cos(time) * 5, Math.sin(time) * 5, 6 + 2 * 0.7 * Math.sin(time));
+
+		s3d.camera.pos.set(Math.cos(time) * 7, Math.sin(time) * 7, 4 + 0.7 * Math.sin(time));
 		s3d.camera.target.set(0.0, 0.0, 0.0);
 		light.setPosition(Math.sin(time * 1.1) * 1.0, Math.cos(time * 1.11) * 0.5, 2.0);
 
@@ -106,8 +107,14 @@ class Main extends hxd.App {
 
 #if debug
 		debugTxt.text = "PINGPONG " + Main.VERSION + " | " + s2d.width + "x" + s2d.height + " | " + engine.drawCalls + " | "
-			+ " Scale:" + Helpers.floatToStringPrecision(Layout.SCALE, 2) + " | " + Timer.frameCount + " | " + Helpers.floatToStringPrecision(engine.fps, 1);
+			+ " Scale:" + Helpers.floatToStringPrecision(Layout.SCALE, 2) + " | " + Timer.frameCount + " | " + Helpers.floatToStringPrecision(engine.fps, 1)
+			+ "\nPress C to switch between ortho and perspective cam";
 #end
+
+		if (Key.isPressed(Key.C)) {
+			var aspect = s2d.width / s2d.height;
+			s3d.camera.orthoBounds = s3d.camera.orthoBounds != null ? null : Bounds.fromValues(-2.5 * aspect, -2.5, 0, 5 * aspect, 5, 80);
+		}
 	}
 
 	//
