@@ -3,6 +3,7 @@
 /publish/7drl19.js
 /publish/game.js
 
+.tmp*
 .DS_Store*
 ._*
 .Spotlight-V100
