@@ -5,6 +5,7 @@ import h3d.mat.Data.Filter;
 import h3d.scene.fwd.DirLight;
 import h3d.scene.fwd.PointLight;
 import h3d.prim.UV;
+import h3d.Vector;
 import h3d.col.Point;
 import h3d.prim.Quads;
 import h3d.scene.Mesh;
@@ -33,6 +34,9 @@ class Main extends hxd.App {
 #end
 	var light:PointLight;
 
+	var avatar : Mesh;
+	var input_movement : Vector;
+	var input_deadzone : Float = 0.2;
 	//
 
 	override function init() {
@@ -48,6 +52,8 @@ class Main extends hxd.App {
 		hxd.Window.getInstance().addEventTarget(onEvent);
 		engine.backgroundColor = 0x112233;
 		engine.autoResize = true;
+
+		input_movement = new Vector( 0, 0, 0, 0 );
 
 		// create the floor
 
@@ -67,13 +73,22 @@ class Main extends hxd.App {
 			}
 		}
 
-		// create the light
-		
+		// create the light		
 		light = new PointLight(s3d);
 		light.color.setColor(0xccffdd);
 		light.params.set(0, 0.25, 0.1);
 		//new DirLight(new h3d.Vector(0.5, 0.5, -0.5), s3d);
 		s3d.lightSystem.ambientLight.set(0.3, 0.3, 0.3);
+
+		//Player avatar
+		var cube = h3d.prim.Cube.defaultUnitCube();
+		cube.addNormals();
+		cube.addUVs();
+		var mat_avatar = h3d.mat.Material.create( hxd.Res.gfx.ring.toTexture() );
+		avatar = new Mesh( cube, mat_avatar, s3d );
+		avatar.scale( 0.5 );
+		avatar.setPosition( 0, 0, 0.25 );
+		
 
 #if debug
 		// debug information
@@ -115,6 +130,17 @@ class Main extends hxd.App {
 			var aspect = s2d.width / s2d.height;
 			s3d.camera.orthoBounds = s3d.camera.orthoBounds != null ? null : Bounds.fromValues(-2.5 * aspect, -2.5, 0, 5 * aspect, 5, 80);
 		}
+
+		//Move player
+		if ( input_movement.length() > input_deadzone ){
+			var movement : Vector = input_movement.clone();
+			movement.scale3( dt );
+			avatar.setPosition( avatar.x + movement.x, avatar.y + movement.y, avatar.z + movement.z );
+			//Point player towards direction of movement
+			avatar.setDirection( movement );
+		}
+
+		
 	}
 
 	//
@@ -125,6 +151,23 @@ class Main extends hxd.App {
 		if (event.kind == EventKind.EKeyDown) {
 			if (event.keyCode >= Key.F1 && event.keyCode <= Key.F12) { return; } // don't block F keys
 			if (event.keyCode >= Key.NUMBER_0 && event.keyCode <= Key.NUMBER_9) { return; } // don't block numbers
+			switch( event.keyCode ){
+				case Key.W | Key.UP:
+					input_movement.y = -1;
+				case Key.S | Key.DOWN:
+					input_movement.y = 1;
+				case Key.A | Key.LEFT:
+					input_movement.x = -1;
+				case Key.D | Key.RIGHT:
+					input_movement.x = 1;
+			}
+		} else if ( event.kind == EventKind.EKeyUp ){
+			switch( event.keyCode ){
+				case Key.W | Key.UP | Key.S | Key.DOWN:
+					input_movement.y = 0;
+				case Key.A | Key.LEFT | Key.D | Key.RIGHT:
+					input_movement.x = 0;
+			}
 		}
 	}
 
