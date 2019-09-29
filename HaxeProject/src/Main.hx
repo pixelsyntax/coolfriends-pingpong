@@ -41,10 +41,10 @@ class Main extends hxd.App {
 #if js
   	 	canvas = cast Browser.document.getElementById("webgl");
         Browser.document.ondrag = e -> { e.preventDefault(); }
+		hxd.Window.getInstance().propagateKeyEvents = true;
 #end
 
 		s2d.defaultSmooth = true;
-		hxd.Window.getInstance().propagateKeyEvents = true;
 		hxd.Window.getInstance().addEventTarget(onEvent);
 		engine.backgroundColor = 0x112233;
 		engine.autoResize = true;
