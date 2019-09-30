@@ -24,6 +24,7 @@ class Main extends hxd.App {
 	public static final VERSION = "v0.0.1";
 	//
 	public static var instance(default, null):Main;
+	public static var updates(default, null) = new Array<Float->Void>();
 	//
 #if debug
 	public var debugTxt(default, null):Text;
@@ -37,7 +38,6 @@ class Main extends hxd.App {
 	var avatar : Mesh;
 	var input_movement : Vector;
 	var input_deadzone : Float = 0.2;
-	//
 
 	override function init() {
 		super.init();
@@ -56,7 +56,6 @@ class Main extends hxd.App {
 		input_movement = new Vector( 0, 0, 0, 0 );
 
 		// create the floor
-
 		var floorQuad = new h3d.prim.Quads(
 			[ new Point(-0.5, -0.5, 0.0), new Point(0.5, -0.5, 0.0), new Point(-0.5, 0.5, 0.0), new Point(0.5, 0.5, 0.0) ], // points
 			[ new UV(0, 0), new UV(1, 0), new UV(0, 1), new UV(1, 1) ], // uvs
@@ -70,6 +69,9 @@ class Main extends hxd.App {
 				var mat = Helpers.randomElement(floorMaterials);
 				var mesh = new Mesh(floorQuad, mat, s3d);
 				mesh.setPosition(x - 2, y - 2, 0.0);
+
+				// a test billboard
+				if (Math.random() < 0.5) { new Billboard("tree1", s3d, mesh.x, mesh.y, mesh.z); }
 			}
 		}
 
@@ -87,8 +89,7 @@ class Main extends hxd.App {
 		var mat_avatar = h3d.mat.Material.create( hxd.Res.gfx.ring.toTexture() );
 		avatar = new Mesh( cube, mat_avatar, s3d );
 		avatar.scale( 0.5 );
-		avatar.setPosition( 0, 0, 0.25 );
-		
+		avatar.setPosition( 0, 0, 0.25 );	
 
 #if debug
 		// debug information
@@ -108,8 +109,9 @@ class Main extends hxd.App {
 	override function update(dt:Float) {
 		var time = Timer.frameCount * 0.02;
 
-		s3d.camera.pos.set(Math.cos(time) * 7, Math.sin(time) * 7, 4 + 0.7 * Math.sin(time));
-		s3d.camera.target.set(0.0, 0.0, 0.0);
+		s3d.camera.pos.set(Math.cos(time) * 1, 8.0, 4 + 0.7 * Math.sin(time));
+		//s3d.camera.pos.set(Math.cos(time) * 7, Math.sin(time) * 7, 4 + 0.7 * Math.sin(time));
+		s3d.camera.target.set(avatar.x, avatar.y, avatar.z);
 		light.setPosition(Math.sin(time * 1.1) * 1.0, Math.cos(time * 1.11) * 0.5, 2.0);
 
 #if js
@@ -140,7 +142,9 @@ class Main extends hxd.App {
 			avatar.setDirection( movement );
 		}
 
-		
+		for (u in updates) {
+			u(dt);
+		}
 	}
 
 	//
