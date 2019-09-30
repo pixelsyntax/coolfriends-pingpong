@@ -71,7 +71,7 @@ class Main extends hxd.App {
 				mesh.setPosition(x - 2, y - 2, 0.0);
 
 				// a test billboard
-				if (Math.random() < 0.5) { new Billboard("tree1", s3d, mesh.x, mesh.y, mesh.z); }
+				if (Math.random() < 0.5) { new Billboard("tree1", s3d, mesh.x + Helpers.randomRange(-0.25, 0.25), mesh.y + Helpers.randomRange(-0.25, 0.25), mesh.z); }
 			}
 		}
 
