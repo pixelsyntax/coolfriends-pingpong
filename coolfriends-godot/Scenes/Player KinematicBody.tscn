@@ -1,0 +1,27 @@
+[gd_scene load_steps=6 format=2]
+
+[sub_resource type="CylinderShape" id=1]
+
+[sub_resource type="SpatialMaterial" id=2]
+
+[sub_resource type="CubeMesh" id=3]
+material = SubResource( 2 )
+
+[sub_resource type="SpatialMaterial" id=4]
+albedo_color = Color( 0, 0, 0, 1 )
+
+[sub_resource type="CubeMesh" id=5]
+material = SubResource( 4 )
+
+[node name="Player KinematicBody" type="KinematicBody"]
+
+[node name="CollisionShape" type="CollisionShape" parent="."]
+shape = SubResource( 1 )
+
+[node name="Body CSGMesh" type="CSGMesh" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00410938, 0.00556731, -0.00571084 )
+mesh = SubResource( 3 )
+
+[node name="Face CSGMesh2" type="CSGMesh" parent="."]
+transform = Transform( 0.81231, 0, 0, 0, 0.357602, 0, 0, 0, 0.141158, 0, 0.570329, 0.99921 )
+mesh = SubResource( 5 )

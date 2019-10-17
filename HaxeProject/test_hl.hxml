@@ -1,9 +1,0 @@
--cp src
-#-lib hldx
--lib heaps
--lib hlsdl
--hl publish/game.hl
--main Main
---macro keep("h2d.Object")
--dce full
---cmd hl publish/game.hl
