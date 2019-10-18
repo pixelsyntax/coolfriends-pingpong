@@ -1,19 +1,19 @@
 extends Camera
 
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
+export(NodePath) var cameraTargePath #Target object to follow
+export var lookAheadLength = 5
 
-var cameraTarget #Target object to follow
+var cameraTarget
 var offsetFromTarget #Desired relative position of camera from target
-var lookAheadLength = 5
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	cameraTarget = $"../Player KinematicBody" #Can we assign this via the editor instead of hard coding a path?
+	cameraTarget = get_node(cameraTargePath)
 	if cameraTarget:
 		offsetFromTarget = cameraTarget.global_transform.origin - global_transform.origin
 		print_debug( offsetFromTarget )
+	else:
+		print_debug( "no camera target defined!" )
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
