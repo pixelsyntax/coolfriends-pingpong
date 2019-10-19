@@ -1,12 +1,11 @@
 extends Camera
 
-export(NodePath) var cameraTargePath #Target object to follow
+export(NodePath) var cameraTargePath
 export var lookAheadLength = 5
 
 var cameraTarget
-var offsetFromTarget #Desired relative position of camera from target
+var offsetFromTarget
 
-# Called when the node enters the scene tree for the first time.
 func _ready():
 	cameraTarget = get_node(cameraTargePath)
 	if cameraTarget:
@@ -15,7 +14,6 @@ func _ready():
 	else:
 		print_debug( "no camera target defined!" )
 	
-# Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	if !cameraTarget: #early exit
 		return
