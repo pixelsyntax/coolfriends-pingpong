@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Scenes/Teleporter.gd" type="Script" id=1]
+
+[sub_resource type="CylinderShape" id=1]
+
+[node name="Teleporter" type="Spatial"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 0 )
+script = ExtResource( 1 )
+
+[node name="Platform CSG" type="CSGCylinder" parent="."]
+use_collision = true
+height = 0.5
+sides = 32
+
+[node name="TeleportArea" type="Area" parent="."]
+
+[node name="CollisionShape" type="CollisionShape" parent="TeleportArea"]
+transform = Transform( 0.1, 0, 0, 0, 1, 0, 0, 0, 0.1, 0, 1, 0 )
+shape = SubResource( 1 )
+
