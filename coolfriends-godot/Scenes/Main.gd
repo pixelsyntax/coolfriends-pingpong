@@ -9,9 +9,10 @@ func _ready():
 #func _process(delta):
 #	pass
 
-func on_change_level(targetScene):
+func on_change_level(targetSceneName):
 	# https://godotengine.org/qa/24773/how-to-load-and-change-scenes
-	if !targetScene:
+	var targetSceneResource = load(targetSceneName)
+	if !targetSceneResource:
 		print("No target scene specified!")
 		return
 	# Remove the current level
@@ -19,5 +20,5 @@ func on_change_level(targetScene):
 	for curLevel in levelParent.get_children():
 		curLevel.queue_free()
 	# Add the next level
-	var next_level = targetScene.instance()
-	add_child(next_level)
+	var targetScene = targetSceneResource.instance()
+	levelParent.add_child(targetScene)

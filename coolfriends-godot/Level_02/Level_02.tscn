@@ -68,3 +68,4 @@ shadow_enabled = true
 
 [node name="Teleporter" parent="." instance=ExtResource( 1 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+targetSceneName = "res://Level_01/Level_01.tscn"

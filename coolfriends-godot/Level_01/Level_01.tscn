@@ -1,11 +1,10 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://Scenes/Doorway.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/Button.gd" type="Script" id=2]
 [ext_resource path="res://Materials/Mat_Platform.tres" type="Material" id=3]
 [ext_resource path="res://Scenes/Impossible to collect coin.gd" type="Script" id=4]
 [ext_resource path="res://Scenes/Teleporter.tscn" type="PackedScene" id=5]
-[ext_resource path="res://Level_02/Level_02.tscn" type="PackedScene" id=6]
 
 [sub_resource type="SpatialMaterial" id=1]
 albedo_color = Color( 0.231373, 0.419608, 0.227451, 1 )
@@ -129,6 +128,6 @@ script = ExtResource( 4 )
 
 [node name="Teleporter" parent="." instance=ExtResource( 5 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 0, 14 )
-targetScene = ExtResource( 6 )
+targetSceneName = "res://Level_02/Level_02.tscn"
 [connection signal="button_activated" from="Button" to="Doorway" method="_on_Button_button_activated"]
 [connection signal="button_deactivated" from="Button" to="Doorway" method="_on_Button_button_deactivated"]

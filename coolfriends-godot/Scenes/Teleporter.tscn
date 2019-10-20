@@ -18,4 +18,3 @@ sides = 32
 [node name="CollisionShape" type="CollisionShape" parent="TeleportArea"]
 transform = Transform( 0.1, 0, 0, 0, 1, 0, 0, 0, 0.1, 0, 1, 0 )
 shape = SubResource( 1 )
-
