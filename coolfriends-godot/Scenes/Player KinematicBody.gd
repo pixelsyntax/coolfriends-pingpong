@@ -11,18 +11,6 @@ func _ready():
 func _process(delta):
 	var transform = get_global_transform()
 	
-	# keyboard controls:
-#	if !mouseMove:
-#		var forward = transform.basis.z;
-#		if Input.is_action_pressed("ui_right"):
-#			rotate_y(deg2rad(speedRot) * -delta)
-#		if Input.is_action_pressed("ui_left"):
-#			rotate_y(deg2rad(speedRot) * delta)
-#		if Input.is_action_pressed("ui_up"):
-#			move_and_collide(forward * delta * speedMove, true)
-#		if Input.is_action_pressed("ui_down"):
-#			move_and_collide(forward * delta * -speedMove, true)
-
 	# mouse controls:
 	var floorPlane = Plane(0, 1, 0, transform.origin.y)
 	var mousePos = get_viewport().get_mouse_position()
@@ -31,10 +19,10 @@ func _process(delta):
 	var targetTransform = transform.looking_at(translation - (mousePos3D - translation), Vector3.UP)
 	targetTransform = transform.interpolate_with(targetTransform, 0.1) # TODO make it more frame-independet
 	rotation = targetTransform.basis.get_euler()
-	if mouseMove:
-		var forward = transform.basis.z; # should be targetTransform?
-		move_and_collide(forward * delta * speedMove, true)
-		
+	
+	var forward = transform.basis.z * speedMove if mouseMove else Vector3.ZERO
+	var gravity = Vector3.DOWN * 5
+	move_and_slide( forward + gravity, Vector3.UP, false, 4, PI/2 )
 
 func _input(event):
 	if event is InputEventMouseButton:

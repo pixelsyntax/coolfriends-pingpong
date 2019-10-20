@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=2]
 
-[sub_resource type="CylinderShape" id=1]
+[sub_resource type="CapsuleShape" id=1]
 
 [sub_resource type="SpatialMaterial" id=2]
 

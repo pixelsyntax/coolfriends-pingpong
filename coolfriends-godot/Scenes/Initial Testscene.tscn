@@ -1,8 +1,12 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://Scenes/Player KinematicBody.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scenes/Player KinematicBody.gd" type="Script" id=2]
 [ext_resource path="res://Scenes/Camera.gd" type="Script" id=3]
+[ext_resource path="res://Scenes/Button.gd" type="Script" id=4]
+[ext_resource path="res://Materials/Mat_Platform.tres" type="Material" id=5]
+[ext_resource path="res://Scenes/Doorway.gd" type="Script" id=6]
+[ext_resource path="res://Scenes/Impossible to collect coin.gd" type="Script" id=7]
 
 [sub_resource type="SpatialMaterial" id=1]
 albedo_color = Color( 0.231373, 0.419608, 0.227451, 1 )
@@ -19,12 +23,20 @@ material = SubResource( 3 )
 size = Vector2( 20, 20 )
 
 [sub_resource type="BoxShape" id=5]
-extents = Vector3( 10, 1, 10 )
+extents = Vector3( 50, 1, 50 )
+
+[sub_resource type="BoxShape" id=6]
+extents = Vector3( 0.7, 3, 0.7 )
+
+[sub_resource type="SpatialMaterial" id=7]
+albedo_color = Color( 0.992157, 1, 0.0745098, 1 )
+metallic = 0.58
+metallic_specular = 0.11
 
 [node name="Initial Testscene" type="Spatial"]
 
 [node name="Player KinematicBody" parent="." instance=ExtResource( 1 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.13428, 0 )
 script = ExtResource( 2 )
 
 [node name="Ground" type="StaticBody" parent="."]
@@ -108,3 +120,52 @@ size = 20.0
 script = ExtResource( 3 )
 cameraTargePath = NodePath("../Player KinematicBody")
 
+[node name="Button" type="CSGBox" parent="."]
+editor/display_folded = true
+transform = Transform( 0.846345, 0, 0, 0, 0.221766, 0, 0, 0, 0.846344, 12.2158, 1.43822, -2.81552 )
+use_collision = true
+script = ExtResource( 4 )
+
+[node name="ActivationArea" type="Area" parent="Button"]
+
+[node name="CollisionShape" type="CollisionShape" parent="Button/ActivationArea"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.4786, 0 )
+shape = SubResource( 6 )
+
+[node name="Platform" type="CSGBox" parent="."]
+editor/display_folded = true
+transform = Transform( 7.41524, 0, 0, 0, 1, 0, 0, 0, 4.58711, 17.6018, 0.410998, 0 )
+use_collision = true
+material = ExtResource( 5 )
+
+[node name="PlatformRamp" type="CSGBox" parent="Platform"]
+transform = Transform( 0.215584, -0.215584, 0, 0.707107, 0.707107, 0, 0, 0, 1, -1.00065, -0.410998, 0 )
+material = ExtResource( 5 )
+
+[node name="ButtonHole" type="CSGBox" parent="Platform"]
+transform = Transform( 0.134857, 0, 0, 0, 1, 0, 0, 0, 0.218002, -0.726336, 1.35241, -0.613789 )
+operation = 2
+
+[node name="Doorway" type="CSGBox" parent="."]
+editor/display_folded = true
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 18.387, 4.95299, 0 )
+use_collision = true
+width = 1.0
+height = 10.0
+depth = 10.0
+script = ExtResource( 6 )
+
+[node name="Hole" type="CSGBox" parent="Doorway"]
+visible = false
+operation = 2
+height = 8.0
+depth = 6.0
+
+[node name="Impossible to collect coin" type="CSGCylinder" parent="."]
+transform = Transform( -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, 19.9839, 2.67919, 0 )
+height = 0.5
+sides = 16
+material = SubResource( 7 )
+script = ExtResource( 7 )
+[connection signal="button_activated" from="Button" to="Doorway" method="_on_Button_button_activated"]
+[connection signal="button_deactivated" from="Button" to="Doorway" method="_on_Button_button_deactivated"]
