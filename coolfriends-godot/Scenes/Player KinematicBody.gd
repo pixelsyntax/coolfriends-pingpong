@@ -1,7 +1,9 @@
 extends KinematicBody
 
-export var speedMove = 8.0
-export var speedRot = 270.0
+export var speedMoveMax = 9.0
+#export var speedRot = 270.0
+export var inputDistMin = 1.0
+export var inputDistMax = 3.5
 
 var mouseMove = false
 
@@ -16,11 +18,14 @@ func _process(delta):
 	var mousePos = get_viewport().get_mouse_position()
 	var camera = get_viewport().get_camera() # gets _3D_ camera, not 2D!
 	var mousePos3D = floorPlane.intersects_ray(camera.project_ray_origin(mousePos), camera.project_ray_normal(mousePos))
-	var targetTransform = transform.looking_at(translation - (mousePos3D - translation), Vector3.UP)
+	var dir = (mousePos3D - translation)
+	var targetTransform = transform.looking_at(translation - dir, Vector3.UP)
 	targetTransform = transform.interpolate_with(targetTransform, 0.1) # TODO make it more frame-independet
 	rotation = targetTransform.basis.get_euler()
 	
-	var forward = transform.basis.z * speedMove if mouseMove else Vector3.ZERO
+	# final movement
+	var speed = speedMoveMax * clamp(dir.length() / (inputDistMax - inputDistMin) - inputDistMin, 0.0, 1.0)
+	var forward = transform.basis.z * speed if mouseMove else Vector3.ZERO
 	var gravity = Vector3.DOWN * 5
 	move_and_slide( forward + gravity, Vector3.UP, false, 4, PI/2 )
 
