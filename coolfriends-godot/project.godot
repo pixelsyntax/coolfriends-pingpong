@@ -19,6 +19,10 @@ config/name="coolfriends-godot"
 run/main_scene="res://Scenes/Initial Testscene.tscn"
 config/icon="res://icon.png"
 
+[autoload]
+
+Main="*res://Scenes/Main.gd"
+
 [rendering]
 
 environment/default_environment="res://default_env.tres"
