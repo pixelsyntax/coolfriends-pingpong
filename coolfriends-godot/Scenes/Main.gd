@@ -1,5 +1,7 @@
 extends Node
 
+onready var levelParent = get_node("/root/Initial Testscene/CUR_LEVEL") # TODO better path...
+	
 signal signal_change_level(levelName)
 
 func _ready():
@@ -16,7 +18,6 @@ func on_change_level(targetSceneName):
 		print("No target scene specified!")
 		return
 	# Remove the current level
-	var levelParent = get_node("/root/Initial Testscene/CUR_LEVEL") # TODO better path...
 	for curLevel in levelParent.get_children():
 		curLevel.queue_free()
 	# Add the next level
