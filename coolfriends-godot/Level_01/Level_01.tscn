@@ -120,7 +120,7 @@ transform = Transform( 0.134857, 0, 0, 0, 1, 0, 0, 0, 0.218002, -0.726336, 1.352
 operation = 2
 
 [node name="Impossible to collect coin" type="CSGCylinder" parent="."]
-transform = Transform( -4.37114e-008, 1, 0, -1, -4.37114e-008, 0, 0, 0, 1, 19.9839, 2.67919, 0 )
+transform = Transform( -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, 19.9839, 2.67919, 0 )
 height = 0.5
 sides = 16
 material = SubResource( 7 )
@@ -129,5 +129,9 @@ script = ExtResource( 4 )
 [node name="Teleporter" parent="." instance=ExtResource( 5 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 0, 14 )
 targetSceneName = "res://Level_02/Level_02.tscn"
+
+[node name="Teleporter2" parent="." instance=ExtResource( 5 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, -8 )
+targetSceneName = "res://Level_03/Level_03.tscn"
 [connection signal="button_activated" from="Button" to="Doorway" method="_on_Button_button_activated"]
 [connection signal="button_deactivated" from="Button" to="Doorway" method="_on_Button_button_deactivated"]
