@@ -1,11 +1,12 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://Materials/Mat_Rock.tres" type="Material" id=1]
-[ext_resource path="res://Scenes/Teleporter.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Scenes/Teleporter/Teleporter.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Level_03/WaterCreature.gd" type="Script" id=3]
 [ext_resource path="res://Materials/Mat_WaterCreature.tres" type="Material" id=4]
 [ext_resource path="res://Level_03/Elevator Pickup.gd" type="Script" id=5]
 [ext_resource path="res://Materials/Mat_Interactable.tres" type="Material" id=6]
+[ext_resource path="res://Scenes/Teleporter/TeleporterTarget.tscn" type="PackedScene" id=7]
 
 [sub_resource type="SpatialMaterial" id=1]
 albedo_color = Color( 0.227451, 0.384314, 0.419608, 1 )
@@ -24,26 +25,26 @@ size = Vector2( 20, 20 )
 [sub_resource type="BoxShape" id=5]
 extents = Vector3( 30, 1, 30 )
 
-[sub_resource type="SpatialMaterial" id=7]
+[sub_resource type="SpatialMaterial" id=6]
 albedo_color = Color( 0.0117647, 0.294118, 0.176471, 1 )
 
-[sub_resource type="SpatialMaterial" id=8]
+[sub_resource type="SpatialMaterial" id=7]
 flags_transparent = true
 albedo_color = Color( 0.0509804, 0.372549, 0.0117647, 0.607843 )
 
-[sub_resource type="QuadMesh" id=9]
-material = SubResource( 8 )
+[sub_resource type="QuadMesh" id=8]
+material = SubResource( 7 )
 size = Vector2( 64, 64 )
 
-[sub_resource type="Curve3D" id=10]
+[sub_resource type="Curve3D" id=9]
 _data = {
 "points": PoolVector3Array( 0, 0, 0, 0, 0, 0, -9.99401, -7.33008, 24.5347, 0, 0, 0, 0, 0, 0, -3.2984, -7.33008, 23.5046, 0, 0, 0, 0, 0, 0, 4.22128, -7.33008, 23.4016, 0, 0, 0, 0, 0, 0, 9.68078, -7.33008, 26.3889, 0, 0, 0, 0, 0, 0, 11.2259, -7.33008, 32.4665, 0, 0, 0, 0, 0, 0, 7.62059, -7.33008, 39.0591, 0, 0, 0, 0, 0, 0, 1.64605, -7.33008, 45.0336, 0, 0, 0, 0, 0, 0, -0.826175, -7.33008, 51.6262, 0, 0, 0, 0, 0, 0, 5.97245, -7.33008, 58.2188, 0, 0, 0, 0, 0, 0, 13.8012, -7.33008, 58.8369, 0, 0, 0, 0, 0, 0, 17.2005, -7.33008, 54.2014, 0, 0, 0, 0, 0, 0, 17.6125, -7.33008, 48.845, 0, 0, 0, 0, 0, 0, 12.8741, -7.33008, 43.5915, 0, 0, 0, 0, 0, 0, 3.80925, -7.33008, 41.3253, 0, 0, 0, 0, 0, 0, -3.71044, -7.33008, 41.3253, 0, 0, 0, 0, 0, 0, -13.0843, -7.33008, 43.6945, 0, 0, 0, 0, 0, 0, -20.604, -7.33008, 47.8149, 0, 0, 0, 0, 0, 0, -24.2093, -7.33008, 54.0984, 0, 0, 0, 0, 0, 0, -21.2886, -7.33008, 63.9, 0, 0, 0, 0, 0, 0, -13.1603, -7.33008, 64.6007, 0, 0, 0, 0, 0, 0, -9.37638, -7.33008, 61.7978, 0, 0, 0, 0, 0, 0, -6.71366, -7.33008, 55.4914, 0, 0, 0, 0, 0, 0, -8.25524, -7.33008, 48.0638, 0, 0, 0, 0, 0, 0, -11.6187, -7.33008, 40.7763, 0, 0, 0, 0, 0, 0, -15.5427, -7.33008, 33.3488, 0, 0, 0, 0, 0, 0, -13.1603, -7.33008, 27.8832, 0, 0, 0, 0, 0, 0, -9.99401, -7.33008, 24.5347 ),
 "tilts": PoolRealArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
 }
 
-[sub_resource type="CapsuleShape" id=11]
+[sub_resource type="CapsuleShape" id=10]
 
-[sub_resource type="Animation" id=12]
+[sub_resource type="Animation" id=11]
 resource_name = "ElevatorMotion"
 length = 6.0
 loop = true
@@ -60,7 +61,7 @@ tracks/0/keys = {
 "values": [ Vector3( -14.002, 0.68396, 13.945 ), Vector3( -14.002, -6.47257, 13.945 ), Vector3( -14.002, 0.68396, 13.945 ) ]
 }
 
-[sub_resource type="BoxShape" id=13]
+[sub_resource type="BoxShape" id=12]
 extents = Vector3( 3, 4, 2 )
 
 [node name="Level_03" type="Node"]
@@ -109,19 +110,19 @@ height = 10.0
 material = ExtResource( 1 )
 
 [node name="Tall Wall 2" type="CSGBox" parent="Higher Ground"]
-transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 11, 4.55564, -2.34125 )
+transform = Transform( -4.37114e-008, 0, 1, 0, 1, 0, -1, 0, -4.37114e-008, 11, 4.55564, -2.34125 )
 use_collision = true
 width = 38.246
 height = 10.0
 
 [node name="Short Wall" type="CSGBox" parent="Higher Ground"]
-transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -9.96632, -2.41196, -2.31776 )
+transform = Transform( -4.37114e-008, 0, 1, 0, 1, 0, -1, 0, -4.37114e-008, -9.96632, -2.41196, -2.31776 )
 use_collision = true
 width = 38.246
 height = 10.0
 
 [node name="Short Wall2" type="CSGBox" parent="Higher Ground"]
-transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -17.9663, -2.41196, -2.31776 )
+transform = Transform( -4.37114e-008, 0, 1, 0, 1, 0, -1, 0, -4.37114e-008, -17.9663, -2.41196, -2.31776 )
 use_collision = true
 width = 38.246
 height = 10.0
@@ -138,7 +139,7 @@ targetSceneName = "res://Level_01/Level_01.tscn"
 editor/display_folded = true
 
 [node name="Rock" type="CSGSphere" parent="Lower Area"]
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, -11.4427, 33 )
+transform = Transform( 1, 0, 0, 0, -4.37114e-008, 1, 0, -1, -4.37114e-008, 0, -11.4427, 33 )
 use_collision = true
 radius = 6.0
 radial_segments = 14
@@ -147,7 +148,7 @@ smooth_faces = false
 material = ExtResource( 1 )
 
 [node name="Rock2" type="CSGSphere" parent="Lower Area"]
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -6, -11.4427, 13 )
+transform = Transform( 1, 0, 0, 0, -4.37114e-008, 1, 0, -1, -4.37114e-008, -6, -11.4427, 13 )
 use_collision = true
 radius = 6.0
 radial_segments = 14
@@ -156,7 +157,7 @@ smooth_faces = false
 material = ExtResource( 1 )
 
 [node name="Rock3" type="CSGSphere" parent="Lower Area"]
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -1, -11.4427, 13 )
+transform = Transform( 1, 0, 0, 0, -4.37114e-008, 1, 0, -1, -4.37114e-008, -1, -11.4427, 13 )
 use_collision = true
 radius = 6.0
 radial_segments = 14
@@ -165,7 +166,7 @@ smooth_faces = false
 material = ExtResource( 1 )
 
 [node name="Rock7" type="CSGSphere" parent="Lower Area"]
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 5, -11.4427, 13 )
+transform = Transform( 1, 0, 0, 0, -4.37114e-008, 1, 0, -1, -4.37114e-008, 5, -11.4427, 13 )
 use_collision = true
 radius = 6.0
 radial_segments = 14
@@ -174,7 +175,7 @@ smooth_faces = false
 material = ExtResource( 1 )
 
 [node name="Rock9" type="CSGSphere" parent="Lower Area"]
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 3, -11.4427, 15 )
+transform = Transform( 1, 0, 0, 0, -4.37114e-008, 1, 0, -1, -4.37114e-008, 3, -11.4427, 15 )
 use_collision = true
 radius = 6.0
 radial_segments = 14
@@ -183,7 +184,7 @@ smooth_faces = false
 material = ExtResource( 1 )
 
 [node name="Rock11" type="CSGSphere" parent="Lower Area"]
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -3, -11.4427, 16 )
+transform = Transform( 1, 0, 0, 0, -4.37114e-008, 1, 0, -1, -4.37114e-008, -3, -11.4427, 16 )
 use_collision = true
 radius = 6.0
 radial_segments = 14
@@ -192,7 +193,7 @@ smooth_faces = false
 material = ExtResource( 1 )
 
 [node name="Rock12" type="CSGSphere" parent="Lower Area"]
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 1, -11.4427, 17 )
+transform = Transform( 1, 0, 0, 0, -4.37114e-008, 1, 0, -1, -4.37114e-008, 1, -11.4427, 17 )
 use_collision = true
 radius = 6.0
 radial_segments = 14
@@ -201,7 +202,7 @@ smooth_faces = false
 material = ExtResource( 1 )
 
 [node name="Rock4" type="CSGSphere" parent="Lower Area"]
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 21, -11.4427, 40 )
+transform = Transform( 1, 0, 0, 0, -4.37114e-008, 1, 0, -1, -4.37114e-008, 21, -11.4427, 40 )
 use_collision = true
 radius = 6.0
 radial_segments = 14
@@ -210,7 +211,7 @@ smooth_faces = false
 material = ExtResource( 1 )
 
 [node name="Rock5" type="CSGSphere" parent="Lower Area"]
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 8, -11.4427, 51 )
+transform = Transform( 1, 0, 0, 0, -4.37114e-008, 1, 0, -1, -4.37114e-008, 8, -11.4427, 51 )
 use_collision = true
 radius = 6.0
 radial_segments = 14
@@ -219,7 +220,7 @@ smooth_faces = false
 material = ExtResource( 1 )
 
 [node name="Rock6" type="CSGSphere" parent="Lower Area"]
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -16, -11.4427, 56 )
+transform = Transform( 1, 0, 0, 0, -4.37114e-008, 1, 0, -1, -4.37114e-008, -16, -11.4427, 56 )
 use_collision = true
 radius = 6.0
 radial_segments = 14
@@ -228,7 +229,7 @@ smooth_faces = false
 material = ExtResource( 1 )
 
 [node name="Rock8" type="CSGSphere" parent="Lower Area"]
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, -11.4427, 60 )
+transform = Transform( 1, 0, 0, 0, -4.37114e-008, 1, 0, -1, -4.37114e-008, 0, -11.4427, 60 )
 use_collision = true
 radius = 6.0
 radial_segments = 14
@@ -237,7 +238,7 @@ smooth_faces = false
 material = ExtResource( 1 )
 
 [node name="Rock10" type="CSGSphere" parent="Lower Area"]
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -21.3938, -10.7859, 37.1483 )
+transform = Transform( 1, 0, 0, 0, -4.37114e-008, 1, 0, -1, -4.37114e-008, -21.3938, -10.7859, 37.1483 )
 use_collision = true
 radius = 6.0
 radial_segments = 14
@@ -251,35 +252,35 @@ use_collision = true
 width = 64.0
 height = 1.0
 depth = 64.0
-material = SubResource( 7 )
+material = SubResource( 6 )
 
 [node name="Water surface" type="CSGMesh" parent="Lower Area"]
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, -6.5, 44 )
-mesh = SubResource( 9 )
+transform = Transform( 1, 0, 0, 0, -4.37114e-008, 1, 0, -1, -4.37114e-008, 0, -6.5, 44 )
+mesh = SubResource( 8 )
 
 [node name="LowerWall" type="CSGBox" parent="Lower Area"]
-transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 28.7987, -5.13731, 41.6707 )
+transform = Transform( -4.37114e-008, 0, -1, 0, 1, 0, 1, 0, -4.37114e-008, 28.7987, -5.13731, 41.6707 )
 use_collision = true
 width = 60.0
 height = 10.0
 material = ExtResource( 1 )
 
 [node name="LowerWall2" type="CSGBox" parent="Lower Area"]
-transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -29.2013, -7.13731, 41.6707 )
+transform = Transform( -4.37114e-008, 0, -1, 0, 1, 0, 1, 0, -4.37114e-008, -29.2013, -7.13731, 41.6707 )
 use_collision = true
 width = 60.0
 height = 5.0
 material = ExtResource( 1 )
 
 [node name="LowerWall3" type="CSGBox" parent="Lower Area"]
-transform = Transform( -1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, -0.201332, -7.13731, 70.6707 )
+transform = Transform( -1, 0, 8.74228e-008, 0, 1, 0, -8.74228e-008, 0, -1, -0.201332, -7.13731, 70.6707 )
 use_collision = true
 width = 60.0
 height = 5.0
 material = ExtResource( 1 )
 
 [node name="Water Creature Path" type="Path" parent="."]
-curve = SubResource( 10 )
+curve = SubResource( 9 )
 
 [node name="PathFollow" type="PathFollow" parent="Water Creature Path"]
 transform = Transform( -0.152065, 0, 0.988228, 0, 1, 0, -0.98837, 0, -0.152043, -9.99401, -7.33008, 24.5347 )
@@ -350,7 +351,7 @@ depth = 1.0
 material = ExtResource( 4 )
 
 [node name="Water Creature Path2" type="Path" parent="."]
-curve = SubResource( 10 )
+curve = SubResource( 9 )
 
 [node name="PathFollow" type="PathFollow" parent="Water Creature Path2"]
 editor/display_folded = true
@@ -433,10 +434,10 @@ smooth_faces = false
 material = ExtResource( 6 )
 
 [node name="CollisionShape" type="CollisionShape" parent="Elevator Pickup"]
-shape = SubResource( 11 )
+shape = SubResource( 10 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/ElevatorMotion = SubResource( 12 )
+anims/ElevatorMotion = SubResource( 11 )
 
 [node name="Elevator" type="KinematicBody" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -14.002, 0.68396, 13.945 )
@@ -451,4 +452,7 @@ material = ExtResource( 6 )
 
 [node name="CollisionShape" type="CollisionShape" parent="Elevator"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -4.85074, 0 )
-shape = SubResource( 13 )
+shape = SubResource( 12 )
+
+[node name="TeleporterTarget A" parent="." instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )

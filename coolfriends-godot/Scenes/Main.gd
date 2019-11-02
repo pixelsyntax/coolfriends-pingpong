@@ -11,7 +11,7 @@ func _ready():
 #func _process(delta):
 #	pass
 
-func on_change_level(targetSceneName):
+func on_change_level(targetSceneName, targetNodePath):
 	# https://godotengine.org/qa/24773/how-to-load-and-change-scenes
 	var targetSceneResource = load(targetSceneName)
 	if !targetSceneResource:
@@ -23,3 +23,7 @@ func on_change_level(targetSceneName):
 	# Add the next level
 	var targetScene = targetSceneResource.instance()
 	levelParent.add_child(targetScene)
+	# Has target node? Place player there
+	var target = get_node(str(targetScene.get_path()) + "/" + targetNodePath)
+	if target:
+		$"/root/Initial Testscene/Player KinematicBody".translation = target.translation

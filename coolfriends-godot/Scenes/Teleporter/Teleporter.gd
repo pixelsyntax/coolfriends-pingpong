@@ -2,6 +2,7 @@ extends Spatial
 
 #export(PackedScene) var targetScene
 export(String, FILE, "*.tscn,*.scn") var targetSceneName setget set_file_path
+export(String) var targetNodePath = "TeleporterTarget A"
 
 #https://www.reddit.com/r/godot/comments/9rh5tt/exporting_a_scene_path/
 func set_file_path(p_value):
@@ -19,4 +20,4 @@ func _ready():
 
 func on_body_entered(body):
 	#print("entering teleporter")
-	$"/root/Main".emit_signal("signal_change_level", targetSceneName)
+	$"/root/Main".emit_signal("signal_change_level", targetSceneName, targetNodePath)

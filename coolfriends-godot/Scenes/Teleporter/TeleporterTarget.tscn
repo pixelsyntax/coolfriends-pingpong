@@ -1,0 +1,7 @@
+[gd_scene format=2]
+
+[node name="TeleporterTarget" type="Spatial"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -20, 0, 0 )
+
+[node name="CSGBox" type="CSGBox" parent="."]
+height = 0.2
