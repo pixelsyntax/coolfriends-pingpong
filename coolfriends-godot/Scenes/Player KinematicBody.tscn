@@ -1,4 +1,6 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://Materials/Mat_Interactable.tres" type="Material" id=1]
 
 [sub_resource type="CapsuleShape" id=1]
 
@@ -13,15 +15,34 @@ albedo_color = Color( 0, 0, 0, 1 )
 [sub_resource type="CubeMesh" id=5]
 material = SubResource( 4 )
 
-[node name="Player KinematicBody" type="KinematicBody"]
+[node name="Player KinematicBody" type="KinematicBody" groups=[
+"Players",
+]]
 
-[node name="CollisionShape" type="CollisionShape" parent="."]
+[node name="CollisionShape" type="CollisionShape" parent="." groups=[
+"Players",
+]]
+transform = Transform( 1, 0, 0, 0, -4.37114e-008, -1, 0, 1, -4.37114e-008, 0, 0.5, 0 )
 shape = SubResource( 1 )
 
-[node name="Body CSGMesh" type="CSGMesh" parent="."]
+[node name="Body CSGMesh" type="CSGMesh" parent="." groups=[
+"Players",
+]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00410938, 0.00556731, -0.00571084 )
 mesh = SubResource( 3 )
 
-[node name="Face CSGMesh2" type="CSGMesh" parent="."]
+[node name="Face CSGMesh2" type="CSGMesh" parent="." groups=[
+"Players",
+]]
 transform = Transform( 0.81231, 0, 0, 0, 0.357602, 0, 0, 0, 0.141158, 0, 0.570329, 0.99921 )
 mesh = SubResource( 5 )
+
+[node name="Hat CSGCylinder" type="CSGCylinder" parent="."]
+transform = Transform( 0.107992, -0.140228, -0.773031, 0, 0.989929, -0.111598, 0.780895, 0.0193926, 0.106905, -0.628661, 1.12895, -0.711864 )
+height = 0.163935
+material = ExtResource( 1 )
+
+[node name="CSGCylinder2" type="CSGCylinder" parent="Hat CSGCylinder"]
+transform = Transform( 0.7, -2.8806e-009, 1.07542e-008, 2.01642e-009, 1, -2.46102e-008, -1.07542e-008, 3.51574e-008, 0.7, 0, 0.492807, 5.96046e-008 )
+height = 1.07558
+material = ExtResource( 1 )
