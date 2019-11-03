@@ -4,8 +4,6 @@ export(String, FILE, "*.tscn,*.scn") var messageScenePath setget set_file_path
 
 onready var messageSceneResource = load("res://Scenes/GUI/Speechbubble.tscn")
 onready var levelParent = get_node("/root/Initial Testscene/CUR_LEVEL") # TODO better path...
-	
-signal signal_change_level(levelName)
 
 #https://www.reddit.com/r/godot/comments/9rh5tt/exporting_a_scene_path/
 func set_file_path(p_value):
