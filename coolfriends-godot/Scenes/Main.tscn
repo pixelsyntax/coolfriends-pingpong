@@ -2,7 +2,6 @@
 
 [ext_resource path="res://Scenes/Main.gd" type="Script" id=1]
 
-
 [node name="Main" type="Node"]
 script = ExtResource( 1 )
-
+messageScenePath = "res://Scenes/GUI/Speechbubble.tscn"
