@@ -14,6 +14,8 @@ builds/
 export_obj/
 desktop.ini
 
+coolfriends-raylib/builds/
+
 # Created by https://www.gitignore.io/api/godot
 # Edit at https://www.gitignore.io/?templates=godot
 
