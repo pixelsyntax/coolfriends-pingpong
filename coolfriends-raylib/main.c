@@ -6,6 +6,7 @@
 
 #include "raylib.h"
 #include "player.h"
+#include "math.h"
 
 int lerp(int a, int b, float d) {
     return roundf(a * (1 - d) + b * d);
