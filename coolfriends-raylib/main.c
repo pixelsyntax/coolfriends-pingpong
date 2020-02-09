@@ -27,7 +27,9 @@ int main(void)
     Camera2D camera = { 0 };
     camera.rotation = 0.0f;
     camera.zoom = 1.0f;
-    camera.target = (Vector2){ screenWidth / 2, screenHeight / 2 };
+    camera.offset = (Vector2){
+        (screenWidth - playerRect.width) / 2,
+        (screenHeight - playerRect.height) / 2 };
 
     SetTargetFPS(60);
 
@@ -56,9 +58,9 @@ int main(void)
         // update the position
         playerRect.x = player.x * playerRect.width;
         playerRect.y = player.y * playerRect.height;
-        camera.offset = (Vector2){
-            lerp(camera.offset.x, (screenWidth - playerRect.width) / 2 - playerRect.x, 0.1),
-            lerp(camera.offset.y, (screenHeight - playerRect.height) / 2 - playerRect.y, 0.1) };
+        camera.target = (Vector2){
+            lerp(camera.target.x, playerRect.x, 0.1),
+            lerp(camera.target.y, playerRect.y, 0.1) };
 
         // Draw
         //----------------------------------------------------------------------------------
