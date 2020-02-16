@@ -38,19 +38,19 @@ int main(void)
     {
         // Input / Update
         //----------------------------------------------------------------------------------
-        if (IsKeyPressed(KEY_RIGHT))
+        if (IsKeyPressed(KEY_RIGHT) || IsKeyPressed( KEY_D ))
         {
             player.x++;
         }
-        else if (IsKeyPressed(KEY_LEFT))
+        else if (IsKeyPressed(KEY_LEFT) || IsKeyPressed( KEY_A ))
         {
             player.x--;
         }
-        if (IsKeyPressed(KEY_UP))
+        if (IsKeyPressed(KEY_UP) || IsKeyPressed( KEY_W ))
         {
             player.y--;
         }
-        else if (IsKeyPressed(KEY_DOWN))
+        else if (IsKeyPressed(KEY_DOWN)|| IsKeyPressed( KEY_S ))
         {
             player.y++;
         }
