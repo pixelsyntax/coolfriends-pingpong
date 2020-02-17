@@ -8,4 +8,7 @@ typedef struct {
 	int y;
 } player_t;
 
+void player_input();
+void player_update(player_t *player);
+
 #endif

@@ -4,6 +4,8 @@
 //
 //--------------------------------------------------------------------------------------
 
+#define TICK_TIME 0.1
+
 #include "raylib.h"
 #include "player.h"
 #include "loot.h"
@@ -27,6 +29,7 @@ int main(void)
 
     InitWindow(screenWidth, screenHeight, "pingpong raylib");
 
+	float tick_time = 0.0;
     Rectangle playerRect = { 400, 280, 40, 40 };
     player_t player = { 0, 0 };
     loot_t loot;
@@ -44,24 +47,14 @@ int main(void)
     // Main game loop
     while (!WindowShouldClose())        // Detect window close button or ESC key
     {
-        // Input / Update
-        //----------------------------------------------------------------------------------
-        if (IsKeyPressed(KEY_RIGHT) || IsKeyPressed( KEY_D ))
-        {
-            player.x++;
-        }
-        else if (IsKeyPressed(KEY_LEFT) || IsKeyPressed( KEY_A ))
-        {
-            player.x--;
-        }
-        if (IsKeyPressed(KEY_UP) || IsKeyPressed( KEY_W ))
-        {
-            player.y--;
-        }
-        else if (IsKeyPressed(KEY_DOWN)|| IsKeyPressed( KEY_S ))
-        {
-            player.y++;
-        }
+		// Input / Update
+		//----------------------------------------------------------------------------------
+
+		player_input();
+		if (GetTime() > tick_time) {
+			tick_time = GetTime() + TICK_TIME;
+			player_update(&player);
+		}
         
         // update the position
         playerRect.x = player.x * playerRect.width;
@@ -74,7 +67,6 @@ int main(void)
         while( loot.x == player.x && loot.y == player.y ){
             position_loot( &loot );
         }
-
 
         // Draw
         //----------------------------------------------------------------------------------
@@ -91,8 +83,8 @@ int main(void)
                     {
                         int xw = x * playerRect.width;
                         int yh = y * playerRect.height;
-                        DrawLine(xw, -1000, xw, 1000, GREEN);
-                        DrawLine(-1000, yh, 1000, yh, GREEN);
+                        DrawLine(xw, -10 * playerRect.width, xw, 10 * playerRect.width, GREEN);
+                        DrawLine(-10 * playerRect.height, yh, 10 * playerRect.height, yh, GREEN);
                     }
                 }
                 
@@ -107,7 +99,7 @@ int main(void)
             DrawRectangle( 10, 10, 250, 80, Fade(SKYBLUE, 0.5f));
             DrawRectangleLines( 10, 10, 250, 80, BLUE);
             DrawText("First test for a grid based game", 20, 20, 10, BLACK);
-            DrawText("- Move with cursor keys", 40, 40, 10, DARKGRAY);
+            DrawText("- Move with cursor keys or WASD", 40, 40, 10, DARKGRAY);
             DrawText("- Find the gold", 40, 60, 10, DARKGRAY);
 
         EndDrawing();
