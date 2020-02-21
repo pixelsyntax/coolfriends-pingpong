@@ -4,11 +4,12 @@
 //
 //--------------------------------------------------------------------------------------
 
-#define TICK_TIME 0.1
+#define TICK_TIME 0.15
 
 #include "raylib.h"
 #include "player.h"
 #include "loot.h"
+#include "bullets.h"
 #include <math.h>
 
 int lerp(int a, int b, float d) {
@@ -25,11 +26,13 @@ int main(void)
     // Initialization
     //--------------------------------------------------------------------------------------
     const int screenWidth = 800;
-    const int screenHeight = 450;
+    const int screenHeight = 600;
 
     InitWindow(screenWidth, screenHeight, "pingpong raylib");
 
-	float tick_time = 0.0;
+	float tick_time = 0.0f;
+	float last_time = GetTime();
+
     Rectangle playerRect = { 400, 280, 40, 40 };
     player_t player = { 0, 0 };
     loot_t loot;
@@ -45,14 +48,20 @@ int main(void)
     SetTargetFPS(60);
 
     // Main game loop
-    while (!WindowShouldClose())        // Detect window close button or ESC key
+    while (!WindowShouldClose()) // Detect window close button or ESC key
     {
+		float time = GetTime();
+		float delta_time = time - last_time;
+		last_time = time;
+		tick_time += delta_time;
+
 		// Input / Update
 		//----------------------------------------------------------------------------------
 
-		player_input();
-		if (GetTime() > tick_time) {
-			tick_time = GetTime() + TICK_TIME;
+		player_input(&player, &camera);
+		if (tick_time > TICK_TIME) {
+			tick_time -= TICK_TIME;
+			/* */
 			player_update(&player);
 		}
         
@@ -67,6 +76,8 @@ int main(void)
         while( loot.x == player.x && loot.y == player.y ){
             position_loot( &loot );
         }
+		
+		bullets_update(delta_time);
 
         // Draw
         //----------------------------------------------------------------------------------
@@ -77,10 +88,8 @@ int main(void)
             BeginMode2D(camera);
             
                 // draw a grid
-                for (int x = -10; x <= 10; x++)
-                {
-                    for (int y = -10; y <= 10; y++)
-                    {
+                for (int x = -10; x <= 10; x++) {
+                    for (int y = -10; y <= 10; y++) {
                         int xw = x * playerRect.width;
                         int yh = y * playerRect.height;
                         DrawLine(xw, -10 * playerRect.width, xw, 10 * playerRect.width, GREEN);
@@ -93,14 +102,17 @@ int main(void)
                 // draw the loot
                 DrawRectangle( loot.x * playerRect.width, loot.y * playerRect.height, playerRect.width, playerRect.height, GOLD );
 
+				bullets_draw();
+
             EndMode2D();
 
             // show some UI text
-            DrawRectangle( 10, 10, 250, 80, Fade(SKYBLUE, 0.5f));
-            DrawRectangleLines( 10, 10, 250, 80, BLUE);
+            DrawRectangle( 10, 10, 250, 100, Fade(SKYBLUE, 0.5f));
+            DrawRectangleLines( 10, 10, 250, 100, BLUE);
             DrawText("First test for a grid based game", 20, 20, 10, BLACK);
             DrawText("- Move with cursor keys or WASD", 40, 40, 10, DARKGRAY);
-            DrawText("- Find the gold", 40, 60, 10, DARKGRAY);
+            DrawText("- Shoot with LMB", 40, 60, 10, DARKGRAY);
+            DrawText("- Find the gold", 40, 80, 10, DARKGRAY);
 
         EndDrawing();
         //----------------------------------------------------------------------------------

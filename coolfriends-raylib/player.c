@@ -1,6 +1,8 @@
 #include "raylib.h"
 #include <stdlib.h>
 #include "player.h"
+#include "bullets.h"
+#include <raymath.h>
 
 /* */
 
@@ -70,6 +72,7 @@ void player_unbuffer_input(input_action_e action) {
 
 /* public */
 
+/* called once per tick */
 void player_update(player_t *player) {
 	if (player_cur_action != NULL) {
 		switch (player_cur_action->action) {
@@ -81,7 +84,8 @@ void player_update(player_t *player) {
 	}
 }
 
-void player_input() {
+/* called every frame */
+void player_input(player_t *player, Camera2D *cam) {
 	if (IsKeyPressed( KEY_UP ) || IsKeyPressed( KEY_W )) { player_buffer_input( up ); }
 	else if (IsKeyReleased( KEY_UP ) || IsKeyReleased( KEY_W )) { player_unbuffer_input( up ); }
 	if (IsKeyPressed( KEY_DOWN ) || IsKeyPressed( KEY_S )) { player_buffer_input( down ); }
@@ -90,4 +94,10 @@ void player_input() {
 	else if (IsKeyReleased( KEY_LEFT ) || IsKeyReleased( KEY_A )) { player_unbuffer_input( left ); }
 	if (IsKeyPressed( KEY_RIGHT ) || IsKeyPressed( KEY_D )) { player_buffer_input( right ); }
 	else if (IsKeyReleased( KEY_RIGHT ) || IsKeyReleased( KEY_D )) { player_unbuffer_input( right ); }
+	/* */
+	if (IsMouseButtonPressed(0)) {
+		Vector2 pos = (Vector2){ player->x * 40.0f + 20.0f, player->y * 40.0f + 20.0f }; // TODO
+		Vector2 dir = Vector2Normalize(Vector2Subtract(pos, Vector2Add(cam->target, Vector2Subtract(cam->offset, GetMousePosition()))));
+		bullets_add(pos, dir);
+	}
 }
