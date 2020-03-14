@@ -95,7 +95,7 @@ void player_input(player_t *player, Camera2D *cam) {
 	if (IsKeyPressed( KEY_RIGHT ) || IsKeyPressed( KEY_D )) { player_buffer_input( right ); }
 	else if (IsKeyReleased( KEY_RIGHT ) || IsKeyReleased( KEY_D )) { player_unbuffer_input( right ); }
 	/* */
-	if (IsMouseButtonPressed(0)) {
+	if (IsMouseButtonPressed(2)) {
 		Vector2 pos = (Vector2){ player->x * 40.0f + 20.0f, player->y * 40.0f + 20.0f }; // TODO
 		Vector2 dir = Vector2Normalize(Vector2Subtract(pos, Vector2Add(cam->target, Vector2Subtract(cam->offset, GetMousePosition()))));
 		bullets_add(pos, dir);
