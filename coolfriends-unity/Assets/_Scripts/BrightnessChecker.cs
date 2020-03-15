@@ -15,13 +15,8 @@ namespace COOLFRIENDS {
 		[SerializeField] UnityEngine.UI.Image uiLightGem = null;
 		[SerializeField] LayerMask layers = ~0;
 		float lightGemChangeVel;
-		int layerMask;
 
 		//
-
-		void Start() {
-			layerMask = layers.value;
-		}
 
 		void Update() {
 			var b = CheckBrightness();
@@ -46,7 +41,7 @@ namespace COOLFRIENDS {
 			var brightness = 0f;
 			foreach (var cp in checkPoints) {
 				var p = transform.TransformPoint(cp);
-				brightness = Mathf.Max(brightness, Main.Inst.LightGrid.GetBrightnessAt(p, layerMask));
+				brightness = Mathf.Max(brightness, Main.Inst.LightGrid.GetBrightnessAt(p, layers.value));
 			}
 			return brightness;
 		}
@@ -55,7 +50,7 @@ namespace COOLFRIENDS {
 			var brightnessAcc = 0f;
 			foreach (var cp in checkPoints) {
 				var p = transform.TransformPoint(cp);
-				brightnessAcc += Main.Inst.LightGrid.GetBrightnessAt(p, layerMask);
+				brightnessAcc += Main.Inst.LightGrid.GetBrightnessAt(p, layers.value);
 			}
 			return brightnessAcc / checkPoints.Length;
 		}

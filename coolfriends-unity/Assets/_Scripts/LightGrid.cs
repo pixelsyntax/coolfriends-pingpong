@@ -18,7 +18,7 @@ namespace COOLFRIENDS {
 
 		Light directionalLight;
 		Dictionary<Vector3Int, LightList> cells = new Dictionary<Vector3Int, LightList>();
-		
+
 		//
 
 		void AddToCell(Vector3Int key, Light l) {
@@ -113,18 +113,14 @@ namespace COOLFRIENDS {
 						: 0f;
 					if (lineDist > 1f) { continue; }
 					var dist = Mathf.Sqrt(distSqr);
-					if (l.shadows != LightShadows.None && Physics.Raycast(lpos, dir, dist, layer, QueryTriggerInteraction.Ignore)) { continue; }
-					dist /= l.range; // now normalized!
-					var b = l.color.grayscale * l.intensity; // TODO: correct formula for distance?
+					if (l.shadows != LightShadows.None && Physics.Raycast(lpos, dir, out RaycastHit hit, dist, layer, QueryTriggerInteraction.Ignore)) { continue; }
+					var nDist = dist / l.range; // normalized!
+					var b = l.color.grayscale * l.intensity;
 					if (normal != null) { b *= Mathf.Clamp01(Vector3.Dot(dir, normal.Value)); if (b == 0f) { continue; } }
-					if (l.type == LightType.Point) {
-						// https://forum.unity.com/threads/light-distance-in-shader.509306/#post-3326818
-						b *= Mathf.Clamp01(1f / (1f + 25f*dist*dist) * Mathf.Clamp01((1f - dist) * 5f));
-					}
-					else if (l.type == LightType.Spot) {
-						/* TODO: ANGLE!! */
-						b *= Mathf.Clamp01(1f / (1f + 25f*lineDist*lineDist) * Mathf.Clamp01((1f - lineDist) * 5f));
-						b *= 1f - dist;
+					// https://forum.unity.com/threads/light-distance-in-shader.509306/#post-3326818
+					b *= Mathf.Clamp01(1f / (1f + 25f * nDist * nDist) * Mathf.Clamp01((1f - nDist) * 5f));
+					if (l.type == LightType.Spot) {
+						b *= Mathf.Clamp01(1f / (1f + 25f * lineDist * lineDist) * Mathf.Clamp01((1f - lineDist) * 5f));
 					}
 					bright += b;
 					if (bright >= max) { return max; }
