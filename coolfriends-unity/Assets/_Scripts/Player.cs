@@ -21,7 +21,7 @@ namespace COOLFRIENDS {
 			if (lookDummy == null) { lookDummy = Creature.MoveDummy; }
 		}
 
-		void FixedUpdate() {
+		void Update() {
 			Creature.MoveInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
 
 #if UNITY_EDITOR
@@ -38,11 +38,15 @@ namespace COOLFRIENDS {
 				curPitch = pitchRange.Clamp(curPitch - Input.GetAxis("Mouse Y") * Time.deltaTime * rotateSpeedMax.x);
 				lookDummy.localEulerAngles = new Vector3(curPitch, 0f, 0f);
 			}
+
+			if (Input.GetButtonDown("Jump")) {
+				Creature.Jump();
+			}
 		}
 		
 #if UNITY_EDITOR
 		void OnGUI() {
-			GUI.Label(new Rect(10, 10, 500, 300), "Press RMB to activate mouse look!\nR - Restart\nF12 - Screenshot");
+			GUI.Label(new Rect(10, 10, 500, 300), "OnFloor: " + Creature.OnFloor + "\nPress RMB to activate mouse look!\nR - Restart\nF12 - Screenshot");
 		}
 #endif
 	}

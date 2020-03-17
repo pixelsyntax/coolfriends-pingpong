@@ -1656,6 +1656,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   floorMaxSlope: 60
+  jumpForce: 5
 --- !u!54 &1175250667
 Rigidbody:
   m_ObjectHideFlags: 0
