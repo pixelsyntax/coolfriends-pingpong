@@ -1630,7 +1630,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73d12bbb1a9ee1e4fa9ef1486d0dbda9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotateSpeedMax: {x: 180, y: 360}
+  rotateSpeed: 180
+  rotatePerSecondMax: 24
   pitchRange:
     min: -60
     max: 60
@@ -1647,16 +1648,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7481aab75dfd854695e67ff11a45ba8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 4
   moveDummy: {fileID: 359090369}
   capsule: {fileID: 1573961731}
-  legHeight: 0.3
-  legDepth: 0.5
   layerFloor:
     serializedVersion: 2
     m_Bits: 1
-  floorMaxSlope: 60
-  jumpForce: 5
+  states:
+  - heightFactor: 1
+    moveSpeed: 4
+    legHeight: 0.3
+    legDepth: 0.5
+    floorMaxSlope: 60
+    jumpForce: 5
+  - heightFactor: 0.5
+    moveSpeed: 2
+    legHeight: 0.1
+    legDepth: 0.3
+    floorMaxSlope: 60
+    jumpForce: 2
 --- !u!54 &1175250667
 Rigidbody:
   m_ObjectHideFlags: 0

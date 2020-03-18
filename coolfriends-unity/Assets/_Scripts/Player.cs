@@ -6,7 +6,8 @@ namespace COOLFRIENDS {
 
 	[RequireComponent(typeof(Creature))]
 	public class Player : MonoBehaviour {
-		[SerializeField] Vector2 rotateSpeedMax = new Vector2(180f, 360f);
+		[SerializeField] float rotateSpeed = 180f;
+		[SerializeField] float rotatePerSecondMax = 30f;
 		[SerializeField] RatKing.Base.RangeFloat pitchRange = new RatKing.Base.RangeFloat(-60f, 60f);
 		[SerializeField] Transform lookDummy = null;
 		public Creature Creature { get; private set; }
@@ -33,15 +34,18 @@ namespace COOLFRIENDS {
 			Cursor.visible = !mouseLook;
 
 			if (mouseLook) {
-				var yaw = Quaternion.Euler(0f, Mathf.Clamp(Input.GetAxis("Mouse X"), -1f, 1f) * Time.deltaTime * rotateSpeedMax.y, 0f);
+				var rotMax = rotatePerSecondMax * Time.deltaTime;
+				var yaw = Quaternion.Euler(0f, Mathf.Clamp(Input.GetAxis("Mouse X") * Time.deltaTime * rotateSpeed, -rotatePerSecondMax, rotatePerSecondMax), 0f);
 				Creature.Rbody.rotation = yaw * Creature.Rbody.rotation;
-				curPitch = pitchRange.Clamp(curPitch - Input.GetAxis("Mouse Y") * Time.deltaTime * rotateSpeedMax.x);
+				curPitch = pitchRange.Clamp(curPitch - Mathf.Clamp(Input.GetAxis("Mouse Y") * Time.deltaTime * rotateSpeed, -rotatePerSecondMax, rotatePerSecondMax));
 				lookDummy.localEulerAngles = new Vector3(curPitch, 0f, 0f);
 			}
 
 			if (Input.GetButtonDown("Jump")) {
 				Creature.Jump();
 			}
+
+			Creature.TargetStateIdx = Input.GetButton("Crouch") ? 1 : 0;
 		}
 		
 #if UNITY_EDITOR
