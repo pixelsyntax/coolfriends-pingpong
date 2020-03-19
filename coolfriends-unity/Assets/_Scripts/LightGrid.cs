@@ -119,9 +119,7 @@ namespace COOLFRIENDS {
 					if (normal != null) { b *= Mathf.Clamp01(Vector3.Dot(dir, normal.Value)); if (b == 0f) { continue; } }
 					// https://forum.unity.com/threads/light-distance-in-shader.509306/#post-3326818
 					b *= Mathf.Clamp01(1f / (1f + 25f * nDist * nDist) * Mathf.Clamp01((1f - nDist) * 5f));
-					if (l.type == LightType.Spot) {
-						b *= Mathf.Clamp01(1f / (1f + 25f * lineDist * lineDist) * Mathf.Clamp01((1f - lineDist) * 5f));
-					}
+					// TODO falloff for spotlights needed? if (l.type == LightType.Spot) { b *= lineDist > 1f ? 0f : 1f; }
 					bright += b;
 					if (bright >= max) { return max; }
 				}

@@ -6,6 +6,7 @@ namespace COOLFRIENDS {
 
 	[RequireComponent(typeof(Creature))]
 	public class Player : MonoBehaviour {
+		[SerializeField] float runSpeedFactor = 1.4f;
 		[SerializeField] float rotateSpeed = 180f;
 		[SerializeField] float rotatePerSecondMax = 30f;
 		[SerializeField] RatKing.Base.RangeFloat pitchRange = new RatKing.Base.RangeFloat(-60f, 60f);
@@ -46,6 +47,7 @@ namespace COOLFRIENDS {
 			}
 
 			Creature.TargetStateIdx = Input.GetButton("Crouch") ? 1 : 0;
+			Creature.MoveSpeedFactor = Input.GetButton("Run") ? runSpeedFactor : 1f;
 		}
 		
 #if UNITY_EDITOR

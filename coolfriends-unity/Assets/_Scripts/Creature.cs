@@ -33,16 +33,14 @@ namespace COOLFRIENDS {
 		[SerializeField] CapsuleCollider capsule = null;
 		[SerializeField] LayerMask layerFloor = new LayerMask();
 		[SerializeField] State[] states = new[] { new State() };
-		//[SerializeField] float moveSpeed = 4f;
-		//[SerializeField] float legHeight = 0.35f;
-		//[SerializeField] float legDepth = 0.85f;
-		//[SerializeField] float floorMaxSlope = 60f;
-		//[SerializeField] float jumpForce = 10f;
+		[SerializeField] Vector3 maxVelocity = new Vector3(10f, 10f, 10f);
+		[SerializeField] float frictionInAir = 0.99f;
 		//
 		public Rigidbody Rbody { get; private set; }
 		public bool OnFloor { get; private set; }
 		public Vector2 MoveInput { get; set; }
 		public int TargetStateIdx { get; set; }
+		public float MoveSpeedFactor { get; set; } = 1f;
 		//
 		State curState;
 		float capsRadius, capsStdHeight;
@@ -100,14 +98,21 @@ namespace COOLFRIENDS {
 				}
 
 				// movement
+				var moveVelocityXZ = (moveDummy.forward * MoveInput.y + moveDummy.right * MoveInput.x) * curState.moveSpeed;
 				if (OnFloor) {
-					var moveVelocityXZ = (moveDummy.forward * MoveInput.y + moveDummy.right * MoveInput.x) * curState.moveSpeed;
-					curVelocity.x = moveVelocityXZ.x;
+					curVelocity.x = moveVelocityXZ.x * MoveSpeedFactor;
 					curVelocity.y = 0f;
-					curVelocity.z = moveVelocityXZ.z;
+					curVelocity.z = moveVelocityXZ.z * MoveSpeedFactor;
+				}
+				if (!OnFloor) {
+					curVelocity.x = curVelocity.x * frictionInAir + moveVelocityXZ.x * (1f - frictionInAir);
+					curVelocity.z = curVelocity.z * frictionInAir + moveVelocityXZ.z * (1f - frictionInAir);
 				}
 
-				Rbody.velocity = curVelocity; // TODO make force based
+				Rbody.velocity = new Vector3(
+					Mathf.Clamp(curVelocity.x, -maxVelocity.x, maxVelocity.x),
+					Mathf.Clamp(curVelocity.y, -maxVelocity.y, maxVelocity.y),
+					Mathf.Clamp(curVelocity.z, -maxVelocity.z, maxVelocity.z)); // TODO make force based
 			}
 			Rbody.angularVelocity = Vector3.zero;
 			wasOnFloor = OnFloor;
