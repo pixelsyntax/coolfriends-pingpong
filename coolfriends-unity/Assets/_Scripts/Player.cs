@@ -24,7 +24,7 @@ namespace COOLFRIENDS {
 		}
 
 		void Update() {
-			Creature.MoveInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+			Creature.MoveInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
 
 #if UNITY_EDITOR
 			mouseLook = Input.GetMouseButton(1);

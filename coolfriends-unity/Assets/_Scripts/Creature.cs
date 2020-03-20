@@ -34,7 +34,8 @@ namespace COOLFRIENDS {
 		[SerializeField] LayerMask layerFloor = new LayerMask();
 		[SerializeField] State[] states = new[] { new State() };
 		[SerializeField] Vector3 maxVelocity = new Vector3(10f, 10f, 10f);
-		[SerializeField] float frictionInAir = 0.99f;
+		[SerializeField] float frictionInAir = 0.01f;
+		[SerializeField] float frictionOnFloor = 0.95f;
 		//
 		public Rigidbody Rbody { get; private set; }
 		public bool OnFloor { get; private set; }
@@ -69,50 +70,56 @@ namespace COOLFRIENDS {
 			if (jumpTime < Time.time) {
 				var curVelocity = Rbody.velocity;
 
-				var depth = curState.legHeight + curState.legDepth;
+				var depth = capsRadius + curState.legHeight + curState.legDepth;
 				var bottomSphere = capsule.transform.TransformPoint(capsule.center - new Vector3(0f, height * 0.5f - capsRadius, 0f));
 				var hitCount = Physics.SphereCastNonAlloc(bottomSphere, capsRadius * 0.99f, Vector3.down, results, depth, layerFloor.value, QueryTriggerInteraction.Ignore);
 				if (hitCount > 0) {
-					var dist = depth;
+					var dist = 1000f;
 					for (int i = 0; i < hitCount; ++i) {
-						if (results[i].distance < dist) {
-							var dir = results[i].point + transform.up * 0.002f - bottomSphere;
-							if (results[i].collider.Raycast(new Ray(bottomSphere, dir), out RaycastHit hit, dir.magnitude + 0.5f)) {
+						var res = results[i];
+						if (res.rigidbody != null && res.rigidbody.angularVelocity.magnitude > 1f) {
+							// tumbling objects (e.g. crates) cannot not be used as platforms
+							continue;
+						}
+						var y = Mathf.Abs(res.point.y - bottomSphere.y);
+						if (y < dist) {
+							var dir = res.point + transform.up * 0.002f - bottomSphere;
+							if (res.collider.Raycast(new Ray(bottomSphere, dir), out RaycastHit hit, dir.magnitude + 0.5f)) {
 								if (Vector3.Angle(hit.normal, Vector3.up) < curState.floorMaxSlope) {
-									dist = results[i].distance;
+									dist = y;
 								}
 							}
 						}
 					}
-					var diff = dist - curState.legHeight;
+					var diff = dist - (capsRadius + curState.legHeight);
 					if (diff < 0f) {
 						OnFloor = true;
-					}
-					if (diff < 0f) {
-						Rbody.MovePosition(Rbody.position + Vector3.down * diff * 0.5f);
+						Rbody.MovePosition(Rbody.position + Vector3.down * diff * 0.35f);
 					}
 					else if (diff > 0f && diff < curState.legDepth && wasOnFloor) {
-						Rbody.MovePosition(Rbody.position + Vector3.down * diff * 0.8f);
 						OnFloor = true;
+						Rbody.MovePosition(Rbody.position + Vector3.down * diff * 0.50f);
 					}
 				}
 
 				// movement
+				if (MoveInput.sqrMagnitude > 1f) { MoveInput = MoveInput.normalized; }
 				var moveVelocityXZ = (moveDummy.forward * MoveInput.y + moveDummy.right * MoveInput.x) * curState.moveSpeed;
 				if (OnFloor) {
-					curVelocity.x = moveVelocityXZ.x * MoveSpeedFactor;
+					Rbody.velocity *= (1f - frictionOnFloor);
+					Rbody.AddForce(moveVelocityXZ * MoveSpeedFactor * 25f, ForceMode.Force);
+					curVelocity = Rbody.velocity;
 					curVelocity.y = 0f;
-					curVelocity.z = moveVelocityXZ.z * MoveSpeedFactor;
 				}
-				if (!OnFloor) {
-					curVelocity.x = curVelocity.x * frictionInAir + moveVelocityXZ.x * (1f - frictionInAir);
-					curVelocity.z = curVelocity.z * frictionInAir + moveVelocityXZ.z * (1f - frictionInAir);
+				else {
+					curVelocity.x = curVelocity.x * (1f - frictionInAir) + moveVelocityXZ.x * frictionInAir;
+					curVelocity.z = curVelocity.z * (1f - frictionInAir) + moveVelocityXZ.z * frictionInAir;
 				}
 
 				Rbody.velocity = new Vector3(
 					Mathf.Clamp(curVelocity.x, -maxVelocity.x, maxVelocity.x),
 					Mathf.Clamp(curVelocity.y, -maxVelocity.y, maxVelocity.y),
-					Mathf.Clamp(curVelocity.z, -maxVelocity.z, maxVelocity.z)); // TODO make force based
+					Mathf.Clamp(curVelocity.z, -maxVelocity.z, maxVelocity.z));
 			}
 			Rbody.angularVelocity = Vector3.zero;
 			wasOnFloor = OnFloor;
