@@ -15,6 +15,8 @@ namespace COOLFRIENDS {
 		[SerializeField] UnityEngine.UI.Image uiLightGem = null;
 		[SerializeField] LayerMask layers = ~0;
 		float lightGemChangeVel;
+		//
+		public float HeightFactor { get; set; } = 1f;
 
 		//
 
@@ -41,6 +43,7 @@ namespace COOLFRIENDS {
 			var brightness = 0f;
 			foreach (var cp in checkPoints) {
 				var p = transform.TransformPoint(cp);
+				p.y *= HeightFactor;
 				brightness = Mathf.Max(brightness, Main.Inst.LightGrid.GetBrightnessAt(p, layers.value));
 			}
 			return brightness;
@@ -61,6 +64,7 @@ namespace COOLFRIENDS {
 		void OnDrawGizmos() {
 			foreach (var cp in checkPoints) {
 				var p = transform.TransformPoint(cp);
+				p.y *= HeightFactor;
 				Gizmos.color = Color.cyan;
 				Gizmos.DrawLine(transform.position, p);
 				Gizmos.DrawSphere(p, 0.125f);

@@ -37,13 +37,14 @@ namespace COOLFRIENDS {
 		[SerializeField] float frictionInAir = 0.01f;
 		[SerializeField] float frictionOnFloor = 0.95f;
 		//
+		State curState;
+		public State CurState => curState;
 		public Rigidbody Rbody { get; private set; }
 		public bool OnFloor { get; private set; }
 		public Vector2 MoveInput { get; set; }
 		public int TargetStateIdx { get; set; }
 		public float MoveSpeedFactor { get; set; } = 1f;
 		//
-		State curState;
 		float capsRadius, capsStdHeight;
 		bool wasOnFloor;
 		float jumpTime;
@@ -61,6 +62,7 @@ namespace COOLFRIENDS {
 		void Update() {
 			curState.MoveTowards(states[TargetStateIdx], Time.deltaTime * 2f);
 		}
+
 		void FixedUpdate() {
 			OnFloor = false;
 
@@ -129,9 +131,27 @@ namespace COOLFRIENDS {
 
 		public void Jump() {
 			if (!OnFloor || jumpTime > Time.time) { return; }
-			Rbody.AddRelativeForce(new Vector3(0f, curState.jumpForce, 0f), ForceMode.Impulse);
+			Rbody.AddRelativeForce(new Vector3(0f, CurState.jumpForce, 0f), ForceMode.Impulse);
 			jumpTime = Time.time + 0.1f;
 		}
+
+		//
+
+#if UNITY_EDITOR
+		void OnDrawGizmos() {
+			if (capsule == null) { return; }
+			var c = capsule;
+			Gizmos.matrix = transform.localToWorldMatrix;
+			Gizmos.color = Color.yellow;
+			Gizmos.DrawWireCube(c.center, new Vector3(c.radius * 2f, c.height, c.radius * 2f));
+			var s = Application.isPlaying ? curState : states[0];
+			Gizmos.color = Color.green;
+			Gizmos.DrawWireCube(c.center + Vector3.down * (c.height + s.legHeight) * 0.5f, new Vector3(c.radius * 2f, s.legHeight, c.radius * 2f));
+			Gizmos.color = Color.cyan;
+			Gizmos.DrawWireCube(c.center + Vector3.down * (c.height * 0.5f + s.legHeight + s.legDepth * 0.5f), new Vector3(c.radius * 2f, s.legDepth, c.radius * 2f));
+		}
+
+#endif
 	}
 
 }

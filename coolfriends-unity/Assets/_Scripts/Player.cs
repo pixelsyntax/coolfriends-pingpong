@@ -11,7 +11,11 @@ namespace COOLFRIENDS {
 		[SerializeField] float rotatePerSecondMax = 30f;
 		[SerializeField] RatKing.Base.RangeFloat pitchRange = new RatKing.Base.RangeFloat(-60f, 60f);
 		[SerializeField] Transform lookDummy = null;
-		public Creature Creature { get; private set; }
+		//
+		Creature creature = null;
+		public Creature Creature => creature != null ? creature : creature = GetComponent<Creature>();
+		BrightnessChecker brightnessChecker = null;
+		public BrightnessChecker BrightnessChecker => brightnessChecker != null ? brightnessChecker : brightnessChecker = GetComponent<BrightnessChecker>();
 		//
 		float curPitch = 0f;
 		bool mouseLook = false;
@@ -19,7 +23,6 @@ namespace COOLFRIENDS {
 		//
 
 		void Awake() {
-			Creature = GetComponent<Creature>();
 			if (lookDummy == null) { lookDummy = Creature.MoveDummy; }
 		}
 
@@ -48,6 +51,8 @@ namespace COOLFRIENDS {
 
 			Creature.TargetStateIdx = Input.GetButton("Crouch") ? 1 : 0;
 			Creature.MoveSpeedFactor = Input.GetButton("Run") ? runSpeedFactor : 1f;
+
+			BrightnessChecker.HeightFactor = Creature.CurState.heightFactor;
 		}
 		
 #if UNITY_EDITOR
