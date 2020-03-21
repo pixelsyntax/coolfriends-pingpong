@@ -42,8 +42,7 @@ namespace COOLFRIENDS {
 		float CheckBrightness_Max() {
 			var brightness = 0f;
 			foreach (var cp in checkPoints) {
-				var p = transform.TransformPoint(cp);
-				p.y *= HeightFactor;
+				var p = transform.TransformPoint(new Vector3(cp.x, cp.y * HeightFactor, cp.z));
 				brightness = Mathf.Max(brightness, Main.Inst.LightGrid.GetBrightnessAt(p, layers.value));
 			}
 			return brightness;
@@ -63,8 +62,7 @@ namespace COOLFRIENDS {
 #if UNITY_EDITOR
 		void OnDrawGizmos() {
 			foreach (var cp in checkPoints) {
-				var p = transform.TransformPoint(cp);
-				p.y *= HeightFactor;
+				var p = transform.TransformPoint(new Vector3(cp.x, cp.y * HeightFactor, cp.z));
 				Gizmos.color = Color.cyan;
 				Gizmos.DrawLine(transform.position, p);
 				Gizmos.DrawSphere(p, 0.125f);

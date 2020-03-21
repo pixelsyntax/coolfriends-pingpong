@@ -45,7 +45,7 @@ namespace COOLFRIENDS {
 		public int TargetStateIdx { get; set; }
 		public float MoveSpeedFactor { get; set; } = 1f;
 		//
-		float capsRadius, capsStdHeight;
+		float capsStdHeight;
 		bool wasOnFloor;
 		float jumpTime;
 
@@ -54,7 +54,6 @@ namespace COOLFRIENDS {
 		void Awake() {
 			Rbody = GetComponent<Rigidbody>();
 			if (moveDummy == null) { moveDummy = transform; }
-			capsRadius = capsule.radius;
 			capsStdHeight = capsule.height;
 			curState = states[0];
 		}
@@ -66,15 +65,16 @@ namespace COOLFRIENDS {
 		void FixedUpdate() {
 			OnFloor = false;
 
+			var radius = capsule.radius;
 			var height = capsule.height = curState.heightFactor * capsStdHeight;
 
 			// floor detection
 			if (jumpTime < Time.time) {
 				var curVelocity = Rbody.velocity;
 
-				var depth = capsRadius + curState.legHeight + curState.legDepth;
-				var bottomSphere = capsule.transform.TransformPoint(capsule.center - new Vector3(0f, height * 0.5f - capsRadius, 0f));
-				var hitCount = Physics.SphereCastNonAlloc(bottomSphere, capsRadius * 0.99f, Vector3.down, results, depth, layerFloor.value, QueryTriggerInteraction.Ignore);
+				var depth = radius + curState.legHeight + curState.legDepth;
+				var bottomSphere = capsule.transform.TransformPoint(capsule.center - new Vector3(0f, height * 0.5f - radius, 0f));
+				var hitCount = Physics.SphereCastNonAlloc(bottomSphere, radius * 0.99f, Vector3.down, results, depth, layerFloor.value, QueryTriggerInteraction.Ignore);
 				if (hitCount > 0) {
 					var dist = 1000f;
 					for (int i = 0; i < hitCount; ++i) {
@@ -93,7 +93,7 @@ namespace COOLFRIENDS {
 							}
 						}
 					}
-					var diff = dist - (capsRadius + curState.legHeight);
+					var diff = dist - (radius + curState.legHeight);
 					if (diff < 0f) {
 						OnFloor = true;
 						Rbody.MovePosition(Rbody.position + Vector3.down * diff * 0.35f);
