@@ -10,7 +10,7 @@ namespace COOLFRIENDS {
 		
 		[SerializeField] CalculateMethod calcMethod = CalculateMethod.Max;
 		[SerializeField] Vector3[] checkPoints = new[] { Vector3.zero };
-		//
+		[SerializeField] bool pointsAreTransformed = false;
 		public Vector3[] CheckPoints => checkPoints;
 		[SerializeField] UnityEngine.UI.Image uiLightGem = null;
 		[SerializeField] LayerMask layers = ~0;
@@ -42,8 +42,7 @@ namespace COOLFRIENDS {
 		float CheckBrightness_Max() {
 			var brightness = 0f;
 			foreach (var cp in checkPoints) {
-				var p = transform.TransformPoint(new Vector3(cp.x, cp.y * HeightFactor, cp.z));
-				brightness = Mathf.Max(brightness, Main.Inst.LightGrid.GetBrightnessAt(p, layers.value));
+				brightness = Mathf.Max(brightness, Main.Inst.LightGrid.GetBrightnessAt(GetPoint(cp), layers.value));
 			}
 			return brightness;
 		}
@@ -51,10 +50,15 @@ namespace COOLFRIENDS {
 		float CheckBrightness_Average() {
 			var brightnessAcc = 0f;
 			foreach (var cp in checkPoints) {
-				var p = transform.TransformPoint(cp);
-				brightnessAcc += Main.Inst.LightGrid.GetBrightnessAt(p, layers.value);
+				brightnessAcc += Main.Inst.LightGrid.GetBrightnessAt(GetPoint(cp), layers.value);
 			}
 			return brightnessAcc / checkPoints.Length;
+		}
+
+		Vector3 GetPoint(Vector3 cp) {
+			return pointsAreTransformed
+				? transform.TransformPoint(new Vector3(cp.x, cp.y * HeightFactor, cp.z))
+				: transform.position + new Vector3(cp.x, cp.y * HeightFactor, cp.z);
 		}
 
 		//
@@ -62,7 +66,7 @@ namespace COOLFRIENDS {
 #if UNITY_EDITOR
 		void OnDrawGizmos() {
 			foreach (var cp in checkPoints) {
-				var p = transform.TransformPoint(new Vector3(cp.x, cp.y * HeightFactor, cp.z));
+				var p = GetPoint(cp);
 				Gizmos.color = Color.cyan;
 				Gizmos.DrawLine(transform.position, p);
 				Gizmos.DrawSphere(p, 0.125f);

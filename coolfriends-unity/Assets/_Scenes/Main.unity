@@ -2018,13 +2018,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   calcMethod: 0
   checkPoints:
-  - {x: 0, y: -0.8, z: 0}
+  - {x: -0.25, y: -0.8, z: -0.25}
+  - {x: -0.25, y: -0.8, z: 0.25}
+  - {x: 0.25, y: -0.8, z: -0.25}
+  - {x: 0.25, y: -0.8, z: 0.25}
   - {x: 0, y: 0, z: 0}
   - {x: 0, y: 0.4, z: 0}
   - {x: -0.25, y: -0.4, z: -0.25}
   - {x: -0.25, y: -0.4, z: 0.25}
   - {x: 0.25, y: -0.4, z: -0.25}
   - {x: 0.25, y: -0.4, z: 0.25}
+  pointsAreTransformed: 0
   uiLightGem: {fileID: 369623631}
   layers:
     serializedVersion: 2
