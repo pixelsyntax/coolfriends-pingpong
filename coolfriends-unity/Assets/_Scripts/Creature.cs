@@ -59,14 +59,22 @@ namespace COOLFRIENDS {
 		}
 
 		void Update() {
+			// keep the player on the floor when they crouch or stand up
+			var oldHeight = curState.heightFactor * capsStdHeight;
+			var oldLegHeight = curState.legHeight;
 			curState.MoveTowards(states[TargetStateIdx], Time.deltaTime * 2f);
+			var newHeight = capsule.height = curState.heightFactor * capsStdHeight;
+			if (OnFloor && !Mathf.Approximately(oldHeight, newHeight)) {
+				var y = (newHeight - oldHeight) * 0.5f + (curState.legHeight - oldLegHeight);
+				transform.Translate(0f, y, 0f, Space.Self);
+			}
 		}
 
 		void FixedUpdate() {
 			OnFloor = false;
 
 			var radius = capsule.radius;
-			var height = capsule.height = curState.heightFactor * capsStdHeight;
+			var height = capsule.height;
 
 			// floor detection
 			if (jumpTime < Time.time) {
