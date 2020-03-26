@@ -104,6 +104,7 @@ namespace COOLFRIENDS {
 			LightList list = null;
 			if (cells.TryGetValue(key, out list)) {
 				foreach (var l in list.lights) {
+					if (!l.gameObject.activeInHierarchy || !l.enabled) { continue; }
 					var lpos = l.transform.position;
 					var dir = pos - lpos;
 					var distSqr = dir.sqrMagnitude;

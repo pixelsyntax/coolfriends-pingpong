@@ -49,6 +49,10 @@ namespace COOLFRIENDS {
 				Creature.Jump();
 			}
 
+			if (Input.GetButtonDown("Interact")) {
+				TryToInteract();
+			}
+
 			Creature.TargetStateIdx = Input.GetButton("Crouch") ? 1 : 0;
 			Creature.MoveSpeedFactor = Input.GetButton("Run") ? runSpeedFactor : 1f;
 
@@ -57,9 +61,18 @@ namespace COOLFRIENDS {
 		
 #if UNITY_EDITOR
 		void OnGUI() {
-			GUI.Label(new Rect(10, 10, 500, 300), "OnFloor: " + Creature.OnFloor + "\nPress RMB to activate mouse look!\nR - Restart\nF12 - Screenshot");
+			GUI.Label(new Rect(10, 10, 500, 300), "OnFloor: " + Creature.OnFloor + "\nPress RMB to activate mouse look!\nLMB - Interact\nR - Restart\nF12 - Screenshot");
 		}
 #endif
+
+		//
+
+		void TryToInteract() {
+			var ray = new Ray(lookDummy.position, lookDummy.forward);
+			if (Physics.Raycast(ray, out var hit, 1.5f, ~0, QueryTriggerInteraction.Ignore)) {
+				Signals.PlayerThrobs.Broadcast(hit.collider, hit.point);
+			}
+		}
 	}
 
 }
